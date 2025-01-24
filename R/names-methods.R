@@ -38,7 +38,7 @@ setMethod("names",
           definition=function(x)
       {
           cn <- colnames(x)
-          fn <- featureNames(x)
+          fn <- x@parameters$desc
           if(length(fn) == length(cn)) {
               cn <- paste("<", cn, ">", sep="")
               for(i in seq(along=fn)) {
