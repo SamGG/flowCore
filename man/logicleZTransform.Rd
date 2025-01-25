@@ -6,10 +6,10 @@
 \title{Computes a transform using the 'logicle_transform' function but keeping zero
 at zero}
 \usage{
-logicleZTransform(transformationId="defaultLogicleTransform", w = 0.5,
-  t = 262144, m = 4.5, a = 0)
+logicleZTransform(transformationId="defaultLogicleZTransform", w =
+  0.5, t = 262144, m = 4.5, a = 0)
 
-estimateLogicle(x, channels,...)
+estimateLogicle(x, channels, ...)
 }
 \arguments{
 \item{transformationId}{A name to assign to the transformation. Used by the
@@ -23,33 +23,55 @@ transform/filter routines.}
 
 \item{a}{a of logicleTransform.}
 
-\item{z}{logical bring back zero at zero.}
+\item{z_pre}{intensity to remove before any computation to shift the peak at
+zero. This is 0 by default.}
 
-\item{n}{negative intensity threshold.}
+\item{z_post}{value to remove after the transformation to bring zero back at
+zero. This is w by default.}
 
-\item{x}{Input flow frame for which the logicle transformations are to be
+\item{m_post}{multiplicative coefficient to apply on the transformed
+intensities. This is 1 by default.}
+
+\item{x}{Input flow frame for which the logicleZ transformations are to be
 estimated.}
 
-\item{channels}{channels or markers for which the logicle transformation is
+\item{channels}{channels or markers for which the logicleZ transformation is
 to be estimated.}
 
 \item{...}{other arguments:
 
-  q: a numeric type specifying quantile value, default is 0.05}
+  z_est intensity of the zero for estimating the negative part of the
+  negative peak. This is 0 by default. NB: z_pre and z_est should not be both
+  different from zero.
+
+  q: a numeric type specifying quantile value, default is 0.05.}
 }
 \description{
-The default logicle transformation transforms the zero intensity into a value
-that is not zero. The current transformation removes this offset after the
+Using the logicle transformation, the zero intensity is transformed into w
+which is usually not zero. The logicleZ removes this offset after the
 standard logicle transformation in order to keep zero at zero. See Logicle
-transformation \code{\link{logicleTransform}} for all parameters.
+transformation \code{\link{logicleTransform}} for all parameters. By default,
+the offset (z_post) is set the value of w.
 }
 \details{
+The logicleZ allows shifting input intensity before transformation and
+scaling transformed intensity. The pre-shifting coefficient (z_pre) aims to
+bring the center of the negative peak at zero before any computation. The
+user can estimate it as the raw intensity of the center of the negative peak.
+z_pre is zero by default (no shifting). The post-multiplicative coefficient
+(m_post) is one by default (no post-scaling).
+
 The estimateLogicle function estimates the parameter w (width of the linear
 zone) from the negative (left) part of a marker's negative peak. It
 calculates the 5th percentile of intensities below the zero threshold. The
-estimateLogicleZ function defines the center of the negative peak and
-subtracts this value from all intensities before performing the classic
-estimate.
+estimateLogicleZ function allows to specify the center of the negative peak
+and subtract this value from all input intensities before performing the
+classic estimate. The center of the negative peak can be introduced in the
+calculations either as z_est or as z_pre (previously defined). When
+specifying z_est, z_est is subtracted from raw intensities only for
+estimating w. When specifying z_pre, z_pre is subtracted from raw intensities
+for estimating w and during the transformation. NB: z_pre and z_est should
+not be both different from zero.
 }
 \examples{
 

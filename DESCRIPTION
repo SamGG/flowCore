@@ -75,10 +75,11 @@ Collate:
     GvHD.R
     CytoExploreR_wrappers.R
     cpp11.R
+    transform-logicleZ.R
 License: Artistic-2.0
 biocViews: ImmunoOncology, Infrastructure, FlowCytometry, CellBasedAssays
 LinkingTo: cpp11, BH(>= 1.81.0.0), cytolib, RProtoBufLib
 VignetteBuilder: knitr
 SystemRequirements: GNU make, C++11
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 Encoding: UTF-8
